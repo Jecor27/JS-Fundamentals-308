@@ -99,7 +99,7 @@ let getLearnerData = (course, ag, submission) => {
     //The strict inequality !==
     if (courseID !== ag.course_id) {
         throw new Error(
-            `Invalid course ID. Expected ${courseID}, but your assignment group is in ${ag.course_id}.`
+            `Invalid course ID.`
         );
     }
 
