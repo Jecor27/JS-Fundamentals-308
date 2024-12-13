@@ -137,8 +137,9 @@ let getLearnerData = (course, ag, submission) => {
         let total_possible_score = 0;
 
         for (let i = 0; i < value.length; i++) {
-            // console.log(value[i]);
+            //console.log(value[i]);
             const submittedAtDate = new Date(value[i][1].submitted_at);
+            console.log(submittedAtDate)
 
 
             const dueAtDate = new Date(ag.assignments[value[i][0] - 1].due_at);
