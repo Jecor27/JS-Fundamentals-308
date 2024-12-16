@@ -93,18 +93,19 @@ const LearnerSubmissions = [
 }; */
 let getLearnerData = (course, ag, submission) => {
     const result = [];
-
-
+    //an empty array to store processed information.
     const courseID = course.id;
+    //pulling the course id from the course object
     //The strict inequality !==
-    if (courseID !== ag.course_id) {
+    if (courseID !== ag.course_id) { //making the sure that the course ID matches the assignment groups course ID (ag.course_id). 
+        // If not it will throw an error if there is a mismatch
         throw new Error(
             `Invalid course ID.`
         );
     }
 
-    const learnerMap = new Map();
-    for (let i = 0; i < submission.length; i++) {
+    const learnerMap = new Map(); //used to group assignemnts by the learner ID 
+    for (let i = 0; i < submission.length; i++) { // then we loop through each one
         let learnerID = submission[i].learner_id;
         //console.log(learnerID)
         let assignmentID = submission[i].assignment_id;
@@ -126,16 +127,20 @@ let getLearnerData = (course, ag, submission) => {
         } else {
             // If does exist in Map
             learnerMap.get(learnerID).push([assignmentID, submissionVar]);
-        }
+        }//if not on the map their submission data is added, if they are then new submission is appended to their existing data
     }
 
     learnerMap.forEach((value, key) => {
-        let student = {};
-        student["id"] = key;
-        student["avg"] = 0;
+        //for each learner in leanermap, a new student object is created
+        let student = {}; //object to store results
+        student["id"] = key; //Learner ID
+        student["avg"] = 0;// PLaceholder for average score
         let total_score = 0;
         let total_possible_score = 0;
 
+
+        //the function is meant to loop through the learners assignments 
+        // and checks if it was submiited on time or what was the score. 
         for (let i = 0; i < value.length; i++) {
             //console.log(value[i]);
             const submittedAtDate = new Date(value[i][1].submitted_at);
@@ -148,7 +153,8 @@ let getLearnerData = (course, ag, submission) => {
 
             const currentDate = new Date();
 
-
+            //If the assignment was submitted late (submittedAtDate > dueAtDate), the score is reduced by 10%. 
+            // If it was on time, the full score is used.
             if (dueAtDate < currentDate) {
                 let learnerAssignId = value[i][0];
                 let assignmentId = ag.assignments[value[i][0] - 1].id;
@@ -158,6 +164,7 @@ let getLearnerData = (course, ag, submission) => {
 
                 student[`${value[i][0]}`] = submissionScore / pointsPossible;
 
+                //Late Submissions got a penalty 
                 if (learnerAssignId === assignmentId) {
                     if (submittedAtDate > dueAtDate) {
                         student[`${value[i][0]}`] = Number(
@@ -175,11 +182,14 @@ let getLearnerData = (course, ag, submission) => {
 
         }
 
+        //Average: Divide the total score by the total possible points. 
+        // The student object (with id, assignment scores, and average) is added to result.
         student["avg"] = total_score / total_possible_score;
         result.push(student);
     });
 
     return result;
+    //function returns the result array
 };
 // here, we would process this data to achieve the desired result.
 /*     const result = [             /////this is just an example output
@@ -199,9 +209,6 @@ let getLearnerData = (course, ag, submission) => {
  
     return result;
 } */
-
-
-
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 
 console.log(result);
