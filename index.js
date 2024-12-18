@@ -116,33 +116,40 @@ let getLearnerData = (course, ag, submission) => {
         //console.log(submittedDate)
         let learnerScore = submission[i].submission.score;
         //console.log(learnerScore)
-        // !: This is the negation operator.
+        // !: This is the negation operator. because of this, it flips it and will only run the code if learnerid is not in learnermap
         if (!learnerMap.has(learnerID)) {
+            //condition will be true if the learner does NOT exist in learnerMap
             // Definition: The has() method checks if the 
-            // specified key (in this case, learnerID) exists in the Map. 
+            // specified key (in this case, learnerID) exists in the Map(). 
             // It returns true if the key exists, and false otherwise
-            learnerMap.set(learnerID, [[assignmentID, submissionVar]]);
+            learnerMap.set(learnerID, [[assignmentID, submissionVar]]);//this will be a new array with one sub array
             // Definition: the Map.set() method always returns the Map object itself, which is truthy. 
-            // Therefore, the condition in your if statement will always be false
+            //means that it will be added to the map where assignmentid and submissionvar is recorded.  
         } else {
-            // If does exist in Map
-            learnerMap.get(learnerID).push([assignmentID, submissionVar]);
+            // only runs If it does exist in Map
+            learnerMap.get(learnerID).push([assignmentID, submissionVar]);//.push will add the new sub array to the existing array
         }//if not on the map their submission data is added, if they are then new submission is appended to their existing data
     }
-
+    /*
+    logic? => checking to see if learnerid exists 
+    if no then the if condition is true and creates the new entry for the first assignment
+    if yes (false)then the else block runs and will add the new assignment to the learnerid  
+    */
+   //value will have the list of assignments and submissions, key is learnerid, for each loop will loop over each learner in learermap
     learnerMap.forEach((value, key) => {
         //for each learner in leanermap, a new student object is created
         let student = {}; //object to store results
         student["id"] = key; //Learner ID
-        student["avg"] = 0;// PLaceholder for average score
-        let total_score = 0;
-        let total_possible_score = 0;
+        student["avg"] = 0;// PLaceholder for average score and sets it to 0
+        let total_score = 0;//tracks the total poins earned from each learner
+        let total_possible_score = 0; //tracks the points possible
 
 
         //the function is meant to loop through the learners assignments 
         // and checks if it was submiited on time or what was the score. 
         for (let i = 0; i < value.length; i++) {
             //console.log(value[i]);
+            //vlaue[i] is the individual assignments
             const submittedAtDate = new Date(value[i][1].submitted_at);
             console.log(submittedAtDate)
 
