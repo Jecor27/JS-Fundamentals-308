@@ -145,24 +145,24 @@ let getLearnerData = (course, ag, submission) => {
         let total_possible_score = 0; //tracks the points possible
 
 
-        //the function is meant to loop through the learners assignments 
+        //meant to loop through the learners assignments 
         // and checks if it was submiited on time or what was the score. 
         for (let i = 0; i < value.length; i++) {
             //console.log(value[i]);
             //vlaue[i] is the individual assignments
-            const submittedAtDate = new Date(value[i][1].submitted_at);
+            const submittedAtDate = new Date(value[i][1].submitted_at);//when the assignment was submitted
             console.log(submittedAtDate)
 
 
-            const dueAtDate = new Date(ag.assignments[value[i][0] - 1].due_at);
+            const dueAtDate = new Date(ag.assignments[value[i][0] - 1].due_at);//assignments due, where it was pulled from assignmentGroup 
             //The Date() constructor creates Date objects. When called as a function, it returns a string representing the current time.
             //console.log(dueAtDate)
 
-            const currentDate = new Date();
+            const currentDate = new Date(); //just sets the current date and time
 
             //If the assignment was submitted late (submittedAtDate > dueAtDate), the score is reduced by 10%. 
             // If it was on time, the full score is used.
-            if (dueAtDate < currentDate) {
+            if (dueAtDate < currentDate) { //meant to only process assignments that are already due but skip assignments with a futrue date
                 let learnerAssignId = value[i][0];
                 let assignmentId = ag.assignments[value[i][0] - 1].id;
                 let pointsPossible =
